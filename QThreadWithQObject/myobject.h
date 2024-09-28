@@ -10,6 +10,7 @@ class MyObject : public QObject
     Q_OBJECT
 public:
     explicit MyObject(QObject *parent = 0);
+
     void DoSetup(QThread &thread);
 
 public slots:

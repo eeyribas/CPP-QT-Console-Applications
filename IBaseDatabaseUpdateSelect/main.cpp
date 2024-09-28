@@ -8,7 +8,7 @@
 #include <sys/syscall.h>
 #include <pthread.h>
 
-void *DatabaseReceiver(void *param);
+void *DatabaseProcess(void *param);
 void Update(QString request);
 QString Select(QString request);
 QSqlDatabase db;
@@ -19,14 +19,14 @@ int main(int argc, char *argv[])
     QCoreApplication a(argc, argv);
 
     pthread_t thread;
-    if (pthread_create(&thread, nullptr, *DatabaseReceiver, nullptr))
+    if (pthread_create(&thread, nullptr, *DatabaseProcess, nullptr))
         perror("Thread start error occurred.\n");
     usleep(1000);
 
     return a.exec();
 }
 
-void *DatabaseReceiver(void *param)
+void *DatabaseProcess(void *param)
 {
     Q_UNUSED(param);
 
@@ -38,12 +38,12 @@ void *DatabaseReceiver(void *param)
     if (sched_setaffinity(syscall(SYS_gettid), sizeof(cpu), &cpu) == -1)
         perror("Selected core error.\n");
 
-    printf("Database Receiver Init...\n");
+    printf("Database process initialized.\n");
     const QString DRIVER("QIBASE");
     if (QSqlDatabase::isDriverAvailable(DRIVER))
         printf("Driver found.\n");
     else
-        printf("Driver not find\n");
+        printf("Driver not find.\n");
 
     db = QSqlDatabase::addDatabase("QIBASE", "firebirdDB");
     db.setConnectOptions();

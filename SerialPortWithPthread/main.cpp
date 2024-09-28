@@ -30,7 +30,7 @@ void *ThreadFunction(void *param)
     CPU_ZERO(&cpu);
     CPU_SET(2, &cpu);
     if (sched_setaffinity(syscall(SYS_gettid), sizeof(cpu), &cpu) == -1)
-        perror("Error Selected Core.\n");
+        perror("Error selected core.\n");
 
     int fd = open("/dev/ttyUSB0", O_RDWR | O_NOCTTY | O_SYNC);
     struct termios tty;

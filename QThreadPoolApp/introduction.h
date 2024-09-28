@@ -7,6 +7,7 @@ class Introduction : public QRunnable
 {
 public:
     Introduction();
+
     void run();
 };
 

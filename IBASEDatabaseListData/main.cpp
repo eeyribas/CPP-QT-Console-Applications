@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 
     const QString DRIVER("QIBASE");
     if (QSqlDatabase::isDriverAvailable(DRIVER)) {
-        printf("Found\n");
+        printf("Found.\n");
 
         QSqlDatabase db = QSqlDatabase::addDatabase("QIBASE", "firebirdDB");
         db.setConnectOptions();
@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
         db.setPassword("masterkey");
 
         if (db.open()) {
-            printf("Connected\n");
+            printf("Connected.\n");
 
             QStringList list;
             QSqlQuery query(db);
@@ -33,15 +33,15 @@ int main(int argc, char *argv[])
                          << "\t" << query.value(4).toString();
             }
 
-            qDebug() << "Disconnect";
+            qDebug() << "Disconnect.";
             db.close();
             db.removeDatabase(QSqlDatabase::defaultConnection);
         } else {
-            printf("Not Connected\n");
+            printf("Not Connected.\n");
             qDebug() << db.lastError();
         }
     } else {
-        printf("Not Found\n");
+        printf("Not Found.\n");
     }
 
     return a.exec();

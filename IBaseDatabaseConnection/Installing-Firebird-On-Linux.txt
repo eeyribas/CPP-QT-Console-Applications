@@ -1,0 +1,2 @@
+sudo apt-get install qttools5-dev
+sudo apt-get install libqt5sql5-ibase

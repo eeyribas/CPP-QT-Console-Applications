@@ -17,9 +17,10 @@ class Process
 public:
     Process();
     ~Process();
-    void start(int process_type);
-    void start(int process_type, int value);
-    void stop();
+
+    void Start(int process_type);
+    void Start(int process_type, int value);
+    void Stop();
 
     void Method1(int value);
     void Method2();

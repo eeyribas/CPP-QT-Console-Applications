@@ -8,6 +8,7 @@ class ThreadId : public QRunnable
 {
 public:
     ThreadId();
+
     void run();
 };
 

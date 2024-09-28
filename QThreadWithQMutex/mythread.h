@@ -8,6 +8,7 @@ class MyThread : public QThread
 {
 public:
     MyThread(QMutex *tmp_mutex, int tmp_number, int *tmp_shared_number);
+
     int number;
     int *shared_number;
 

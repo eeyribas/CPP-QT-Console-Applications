@@ -9,6 +9,8 @@
 #include <pthread.h>
 
 void *DatabaseProcess(void *param);
+QSqlDatabase db;
+
 
 int main(int argc, char *argv[])
 {
@@ -16,7 +18,7 @@ int main(int argc, char *argv[])
 
     pthread_t thread;
     if (pthread_create(&thread, nullptr, *DatabaseProcess, nullptr))
-        perror("Not Connected Database Control Init...\n");
+        perror("Thread could not be created.\n");
     usleep(1000);
 
     return a.exec();
@@ -26,26 +28,24 @@ void *DatabaseProcess(void *param)
 {
     Q_UNUSED(param);
 
-    int selectedCore = 3;
+    int selected_core = 3;
     cpu_set_t cpu;
     CPU_ZERO(&cpu);
-    CPU_SET(selectedCore, &cpu);
-
+    CPU_SET(selected_core, &cpu);
     if (sched_setaffinity(syscall(SYS_gettid), sizeof(cpu), &cpu) == -1)
-        perror("Error Selected Core...\n");
+        perror("Error selected core.\n");
 
-    printf("Database Receiver Init...\n");
+    printf("Database process initialized.\n");
     const QString DRIVER("QIBASE");
     if (QSqlDatabase::isDriverAvailable(DRIVER))
-        printf("Driver found.\n");
+        printf("Driver found\n");
     else
-        printf("Driver doesn't find.\n");
+        printf("Driver doesn't find\n");
 
-    QSqlDatabase db;
     db = QSqlDatabase::addDatabase("QIBASE", "firebirdDB");
     db.setConnectOptions();
     db.setHostName("192.168.1.145");
-    db.setDatabaseName("/DatabaseFiles/Example.FDB");
+    db.setDatabaseName("D:/DatabaseFiles/Shade_B.FDB");
     db.setUserName("SYSDBA");
     db.setPassword("masterkey");
 
@@ -54,21 +54,21 @@ void *DatabaseProcess(void *param)
         if (db.open()) {
             printf("Database connected.\n");
 
-            QString insert_string = "select o_result from api_communication.add_('Client', '2020/06/13/11:12:15.000');";
-            QSqlQuery sql_query(db);
-            sql_query.exec(insert_string);
-            while (sql_query.next())
-                qDebug() << sql_query.value(0).toString();
+            QString insert_str = "select o_result from api_communication.add_('Client', '2020/06/13/11:12:15.000');";
+            QSqlQuery insert_query(db);
+            insert_query.exec(insert_str);
+            while (insert_query.next())
+                qDebug() << insert_query.value(0).toString();
             QSqlDatabase::database().commit();
 
-            QStringList list;
-            QSqlQuery list_query(db);
-            list_query.exec("select *from communication_tb;");
-            while (list_query.next()) {
-                list.append(list_query.value(0).toString());
-                list.append(list_query.value(1).toString());
-                list.append(list_query.value(4).toString());
-                qDebug() << list_query.value(0).toString() << "\t" << list_query.value(1).toString() << "\t" << list_query.value(4).toString();
+            QStringList select_list;
+            QSqlQuery select_query(db);
+            select_query.exec("select *from communication_tb;");
+            while (select_query.next()) {
+                select_list.append(select_query.value(0).toString());
+                select_list.append(select_query.value(1).toString());
+                select_list.append(select_query.value(4).toString());
+                qDebug() << select_query.value(0).toString() << "\t" << select_query.value(1).toString() << "\t" << select_query.value(4).toString();
             }
             QSqlDatabase::database().commit();
 

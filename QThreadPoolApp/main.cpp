@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    QRunnable* print_runnable = new Introduction();
+    QRunnable *print_runnable = new Introduction();
     QThreadPool::globalInstance()->start(print_runnable);
     QThreadPool::globalInstance()->start(new ThreadId);
 
