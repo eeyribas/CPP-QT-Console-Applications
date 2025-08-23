@@ -11,12 +11,12 @@ class CustomQueue
 {
 public:
     CustomQueue(int size = SIZE);
-    void putQueue(const T &item);
-    T getQueue();
-    T peek();
-    bool isEmpty() const { return m_queue.count() == 0; }
-    int count() const { return m_queue.count(); }
-    void clear() { m_queue.clear(); }
+    void PutQueue(const T &item);
+    T GetQueue();
+    T Peek();
+    bool IsEmpty() const { return m_queue.count() == 0; }
+    int Count() const { return m_queue.count(); }
+    void Clear() { m_queue.clear(); }
 
 private:
     QQueue<T> m_queue;
@@ -33,7 +33,7 @@ CustomQueue<T, SIZE>::CustomQueue(int size)
 }
 
 template <class T, int SIZE>
-void CustomQueue<T, SIZE>::putQueue(const T &item)
+void CustomQueue<T, SIZE>::PutQueue(const T &item)
 {
     m_semProducer.acquire();
     m_mutex.lock();
@@ -43,10 +43,9 @@ void CustomQueue<T, SIZE>::putQueue(const T &item)
 }
 
 template <class T, int SIZE>
-T CustomQueue<T, SIZE>::getQueue()
+T CustomQueue<T, SIZE>::GetQueue()
 {
     T item;
-
     m_semConsumer.acquire();
     m_mutex.lock();
     item = m_queue.dequeue();
@@ -57,10 +56,9 @@ T CustomQueue<T, SIZE>::getQueue()
 }
 
 template <class T, int SIZE>
-T CustomQueue<T, SIZE>::peek()
+T CustomQueue<T, SIZE>::Peek()
 {
     T item;
-
     m_semConsumer.acquire();
     m_mutex.lock();
     item = m_queue.head();

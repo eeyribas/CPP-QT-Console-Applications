@@ -4,11 +4,6 @@
 #include <iostream>
 #include <thread>
 #include <mutex>
-#include <chrono>
-#include <unistd.h>
-#include <sys/ioctl.h>
-#include <sys/syscall.h>
-#include <sys/statvfs.h>
 #include "datapaths.h"
 #include "logger.h"
 
@@ -23,11 +18,12 @@ public:
     void Run(int core_index);
 
 private:
+    void SetThreadState(bool value);
+    bool GetThreadState();
+
     std::thread th;
     std::mutex mtx;
     bool th_state;
-    void SetThreadState(bool value);
-    bool GetThreadState();
 
     FileOperations file_operations;
 
